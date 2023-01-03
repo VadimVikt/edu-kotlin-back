@@ -1,29 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
-    application
+    kotlin("jvm") version "1.5.10" apply false
 }
 
 group = "ru.vadim.kotlin-marketplace"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
-}
-
-application {
-    mainClass.set("MainKt")
+subprojects {
+    group = rootProject.group
+    version = rootProject.version
+    repositories {
+        mavenCentral()
+    }
+    tasks.withType<KotlinCompile>() {
+        kotlinOptions.jvmTarget = "11"
+    }
 }
