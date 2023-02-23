@@ -9,15 +9,18 @@
 
 1. Info
     1. login
-    2. name
-    3. surName
-    4. familyName
+    2. firstname
+    3. lastname
     5. birthday
-2. Description
-   1. avatar
-   2. description
-   3. rating
-3. Attributes
-   1. contacts
-   2. interest
-   3. subscribes
+    6. email
+2. Attributes
+   1. middleName
+   2. socialId
+   3. interest
+   4. avatar-url
+   5. userId
+3. Social
+   1. name
+   2. socialId
+   3. userId
+
