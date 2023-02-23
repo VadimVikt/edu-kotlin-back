@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "ru.vadim.kotlin-marketplace"
+group = "ru.vadim.edu-kotlin-back"
 version = "0.0.1"
 
 allprojects {
