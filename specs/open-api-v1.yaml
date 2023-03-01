@@ -1,0 +1,367 @@
+openapi: 3.0.3
+info:
+  title: Users profiles
+  description: Service for users profiles
+  version: 1.0.0
+servers:
+  - url: 'http:localhost:8080/api/v1'
+tags:
+  - name: profile
+    description: Работа с профилем пользователя
+paths:
+  /profile/create:
+    post:
+      tags:
+        - profile
+      summary: Create profile
+      operationId: profileCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileCreateResponse'
+  /profile/read:
+    post:
+      tags:
+        - profile
+      summary: Read profile
+      operationId: profileRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileReadRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileReadResponse'
+  /profile/update:
+    post:
+      tags:
+        - profile
+      summary: Update profile
+      operationId: profileUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileUpdateResponse'
+  /profile/delete:
+    post:
+      tags:
+        - profile
+      summary: Delete profile
+      operationId: profileDelete
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileDeleteRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileDeleteResponse'
+  /profile/search:
+    post:
+      tags:
+        - profile
+      summary: Search profile
+      operationId: profileSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileSearchRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSearchResponse'
+components:
+  schemas:
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/ProfileCreateRequest'
+          read: '#/components/schemas/ProfileReadRequest'
+          update: '#/components/schemas/ProfileUpdateRequest'
+          delete: '#/components/schemas/ProfileDeleteRequest'
+          search: '#/components/schemas/ProfileSearchRequest'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дискриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/ProfileCreateResponse'
+          read: '#/components/schemas/ProfileReadResponse'
+          update: '#/components/schemas/ProfileUpdateResponse'
+          delete: '#/components/schemas/ProfileDeleteResponse'
+          search: '#/components/schemas/ProfileSearchResponse'
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    ProfileId:
+      type: string
+      description: Идентификатор профиля
+    ProfileLock:
+      type: string
+      description: Версия оптимистичной блокировки
+    BaseProfile:
+      type: object
+      description: Объект описывает свойства, одинаковые для create and update
+      properties:
+        login:
+          type: string
+          description: Логин пользователя
+        firstName:
+          type: string
+          description: Имя пользователя
+        lastName:
+          type: string
+          description: Фамилия пользователя
+        birthday:
+          type: string
+          description: День рождения
+        email:
+          type: string
+          description: Email
+    ProfileInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+    ProfileCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProfile'
+    ProfileCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ProfileRequestDebug'
+        - type: object
+          properties:
+            profile:
+              $ref: '#/components/schemas/ProfileCreateObject'
+    ProfileReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProfileId'
+    ProfileReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ProfileRequestDebug'
+        - type: object
+          properties:
+            profile:
+              $ref: '#/components/schemas/ProfileReadObject'
+    ProfileUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProfile'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProfileId'
+            lock:
+              $ref: '#/components/schemas/ProfileLock'
+    ProfileUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ProfileRequestDebug'
+        - type: object
+          properties:
+            profile:
+              $ref: '#/components/schemas/ProfileUpdateObject'
+    ProfileDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProfileId'
+            lock:
+              $ref: '#/components/schemas/ProfileLock'
+    ProfileDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ProfileRequestDebug'
+        - type: object
+          properties:
+            profile:
+              $ref: '#/components/schemas/ProfileDeleteObject'
+    ProfileSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в профилях
+    ProfileSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ProfileRequestDebug'
+        - type: object
+          properties:
+            adFilter:
+              $ref: '#/components/schemas/ProfileSearchFilter'
+    ProfileResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProfile'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/ProfileId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/ProfileLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/ProfilePermissions'
+    ProfilePermissions:
+      type: string
+      description: Доступы для клиента для операций над профилями
+      enum:
+        - read
+        - update
+        - delete
+    ProfileResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом профиля
+          properties:
+            profile:
+              $ref: '#/components/schemas/ProfileResponseObject'
+    ProfileResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            profiles:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProfileResponseObject'
+    ProfileCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ProfileResponseSingle'
+    ProfileReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ProfileResponseSingle'
+    ProfileUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ProfileResponseSingle'
+    ProfileDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ProfileResponseSingle'
+    ProfileSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ProfileResponseSingle'
+
+    # STUBS ======================
+    ProfileRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+    ProfileRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/ProfileDebug'
+    ProfileDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/ProfileRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/ProfileRequestDebugStubs'
+    ProfileRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badLogin
+        - badFirstName
+        - badLastName
+        - badBirthday
+        - badEmail
+        - cannotDelete
+        - badSearchString
