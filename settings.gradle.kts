@@ -16,5 +16,6 @@ pluginManagement {
 }
 
 include("m1l1-quickstart")
-//include("m2-prepare")
+include("m2-prepare")
 include("profile-openapi-v1-jackson")
+include("profile-common")
