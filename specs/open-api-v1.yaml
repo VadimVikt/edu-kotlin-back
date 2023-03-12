@@ -269,7 +269,7 @@ components:
         - $ref: '#/components/schemas/ProfileRequestDebug'
         - type: object
           properties:
-            adFilter:
+            profileFilter:
               $ref: '#/components/schemas/ProfileSearchFilter'
     ProfileResponseObject:
       allOf:

@@ -8,6 +8,7 @@ enum class PrStub {
     BAD_LOGIN,
     BAD_FIRST_NAME,
     BAD_LAST_NAME,
+    BAD_BIRTHDAY,
     BAD_EMAIL,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
