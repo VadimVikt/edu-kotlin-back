@@ -1,7 +1,7 @@
 # https://github.com/github/gitignore/blob/main/Gradle.gitignore
 .gradle
 **/build/
-!src/**/build/
+!profile-openapi-v1-jackson/src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting

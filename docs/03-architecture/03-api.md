@@ -11,8 +11,8 @@
     1. login
     2. firstname
     3. lastname
-    5. birthday
-    6. email
+    4. birthday
+    5. email
 2. Attributes
    1. middleName
    2. socialId
