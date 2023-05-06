@@ -21,9 +21,6 @@ suspend fun ApplicationCall.createProfile() {
 }
 
 suspend fun ApplicationCall.readProfile() {
-    println("Test test test")
-    println("ReadTest test test")
-    println(ProfileReadRequest())
     val request = receive<ProfileReadRequest>()
     val context = PrContext()
     context.fromTransport(request)

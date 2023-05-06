@@ -16,7 +16,7 @@ class ProfileV1ApiTest {
     @Test
     fun create() = testApplication {
         val client = myClient()
-        val response = client.post("/api/v1/create") {
+        val response = client.post("/api/v1/profile/create") {
             val requestObj  = ProfileCreateRequest(
                 requestId = "12345",
                 profile = ProfileCreateObject(
@@ -44,7 +44,7 @@ class ProfileV1ApiTest {
         val client = myClient()
         val response = client.post("/api/v1/profile/read") {
             val requestObj = ProfileReadRequest(
-                requestId = "12345",
+                requestId = "222",
                 profile = ProfileReadObject("222"),
                 debug = ProfileDebug(
                     mode = ProfileRequestDebugMode.PROD,
@@ -56,7 +56,7 @@ class ProfileV1ApiTest {
         }
         val responseObj = response.body<ProfileReadResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("222", responseObj.profile?.id)
+        assertEquals("12345", responseObj.profile?.id)
 
     }
 
@@ -84,7 +84,7 @@ class ProfileV1ApiTest {
         }
         val responseObj = response.body<ProfileUpdateResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("222", responseObj.profile?.id)
+        assertEquals("12345", responseObj.profile?.id)
     }
 
     @Test
@@ -106,7 +106,7 @@ class ProfileV1ApiTest {
         }
         val responseObj = response.body<ProfileDeleteResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("222", responseObj.profile?.id)
+        assertEquals("12345", responseObj.profile?.id)
     }
 
     @Test
@@ -126,7 +126,7 @@ class ProfileV1ApiTest {
         }
         val responseObj = response.body<ProfileSearchResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("222", responseObj.profile?.id)
+        assertEquals("12345", responseObj.profile?.id)
 
     }
 
